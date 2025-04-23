@@ -2,6 +2,7 @@ package org.pet.groupchat.controller;
 
 import org.pet.groupchat.model.User;
 import org.pet.groupchat.repository.UserRepository;
+import org.pet.groupchat.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +16,11 @@ import java.util.List;
 @RestController
 public class ChatController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public ChatController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ChatController(UserService service) {
+        this.userService = service;
     }
 
     @GetMapping("/init")
@@ -33,10 +34,8 @@ public class ChatController {
     @PostMapping("/auth")
     public HashMap<String, Boolean> auth(@RequestParam String name) {
         HashMap<String, Boolean> response = new HashMap<>();
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        System.out.println(name);
-        User user = new User(sessionId, name);
-        userRepository.save(user);
+
+        userService.authUser(name);
 
         response.put("result", true);
 
