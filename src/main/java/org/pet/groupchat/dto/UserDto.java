@@ -19,4 +19,8 @@ public class UserDto {
         this.sessionId = sessionId;
     }
 
+    public UserDto(String name) {
+        this.name = name;
+    }
+
 }
